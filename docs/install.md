@@ -1,4 +1,4 @@
-English|[中文]()
+English|[中文](https://github.com/DrRyanHuang/mmdetection/blob/master/docs/install_cn.md)
 
 ## Installation
 
