@@ -9,7 +9,9 @@
 - `GCC 5+`
 - [`mmcv`](https://github.com/open-mmlab/mmcv)
 
-### Install mmdetection
+
+
+### 安装`mmdetection`
 
 ##### a. 创建一个 conda 虚拟环境，并激活它
 
@@ -114,32 +116,34 @@ pip install -v -e .  # or "python setup.py develop"
 CC=clang CXX=clang++ CFLAGS='-stdlib=libc++' pip install -e .
 ```
 
-注意:
+**注意**:
 
-1. The git commit id will be written to the version number with step d, e.g. 0.6.0+2e7045c. The version will also be saved in trained models.
-It is recommended that you run step d each time you pull some updates from github. If C++/CUDA codes are modified, then this step is compulsory.
+1. 在上述**步骤d**中，`git commit id`将被写入版本号中，例如：`0.6.0+2e7045c`. 版本号将被保存在训练模型中.
 
-    > Important: Be sure to remove the `./build` folder if you reinstall mmdet with a different CUDA/PyTorch version.
+2. 建议您每次从`github`提取一些更新时都运行**步骤d**。 如果修改了`C ++/CUDA`内核，则此步骤是**必须的**。
 
-    ```shell
-    pip uninstall mmdet
-    rm -rf ./build
-    find . -name "*.so" | xargs rm
-    ```
+   > 重要：如果你用不同的`CUDA/PyTorch`版本重新安装了`mmdet`，一定要移除`./build`文件夹
 
-2. Following the above instructions, mmdetection is installed on `dev` mode, any local modifications made to the code will take effect without the need to reinstall it (unless you submit some commits and want to update the version number).
+   ```shell
+   pip uninstall mmdet
+   rm -rf ./build
+   find . -name "*.so" | xargs rm
+   ```
 
-3. If you would like to use `opencv-python-headless` instead of `opencv-python`,
-you can install it before installing MMCV.
+3. 按照上述说明，`mmdetection`将以`dev`模式安装，对代码进行的任何本地修改都将生效而无需重新安装 (除非您提交了一些`commits`并希望更新版本号)。
 
-4. Some dependencies are optional. Simply running `pip install -v -e .` will only install the minimum runtime requirements. To use optional dependencies like `albumentations` and `imagecorruptions` either install them manually with `pip install -r requirements/optional.txt` or specify desired extras when calling `pip` (e.g. `pip install -v -e .[optional]`). Valid keys for the extras field are: `all`, `tests`, `build`, and `optional`.
+4. 如果你想要的使用`opencv-python-headless` 而不是`opencv-python`，你可以在安装`MMCV`之前安装它
+
+5. 一些依赖是可选的，简单运行`pip install -v -e .`仅安装最低运行需求依赖。
+
+   要使用诸如`albumentations`和`imagecorruptions`之类的可选依赖项，请使用`pip install -r requirements/optional.txt`手动安装，或者在调用`pip`时指定所需的附加项 (例如`pip install -v -e .[optional] `)。额外的有效字段为： `all`, `tests`, `build`和`optional`.
 
 ### 只安装CPU版本
 
-The code can be built for CPU only environment (where CUDA isn't available).
+这些代码用于在仅仅使用CPU的环境(CUDA不可用的环境)运行
 
-In CPU mode you can run the demo/webcam_demo.py for example.
-However some functionality is gone in this mode:
+想看例子的话，在CPU模式下运行`demo/webcam_demo.py`试试
+但是在CPU模式下，这些功能不可以用：
 
 - Deformable Convolution
 - Deformable ROI pooling
@@ -147,27 +151,31 @@ However some functionality is gone in this mode:
 - nms_cuda
 - sigmoid_focal_loss_cuda
 
-So if you try to run inference with a model containing deformable convolution you will get an error.
-Note: We set `use_torchvision=True` on-the-fly in CPU mode for `RoIPool` and `RoIAlign`
+所以当你使用一个包含`deformable convolutiond`的模型进行推理时，你会遇到一个`error`
+**注意**: 在CPU模式下，我们为`RoIPool`和`RoIAlign`实时设置了`use_torchvision = True`。
 
-### Another option: Docker Image
 
-We provide a [Dockerfile](https://github.com/open-mmlab/mmdetection/blob/master/docker/Dockerfile) to build an image.
+
+### 其他可选项: Docker镜像
+
+我们提供了 [Dockerfile](https://github.com/open-mmlab/mmdetection/blob/master/docker/Dockerfile) 去构建这个镜像.
 
 ```shell
 # build an image with PyTorch 1.5, CUDA 10.1
 docker build -t mmdetection docker/
 ```
 
-Run it with
+运行脚本：
 
 ```shell
 docker run --gpus all --shm-size=8g -it -v {DATA_DIR}:/mmdetection/data mmdetection
 ```
 
-### A from-scratch setup script
 
-Here is a full script for setting up mmdetection with conda.
+
+### 安装`mmdetection`的全部脚本
+
+这里是使用`conda`安装 `mmdetection`的全部脚本
 
 ```shell
 conda create -n open-mmlab python=3.7 -y
@@ -186,11 +194,13 @@ pip install -r requirements/build.txt
 pip install -v -e .
 ```
 
-### Using multiple MMDetection versions
 
-The train and test scripts already modify the `PYTHONPATH` to ensure the script use the MMDetection in the current directory.
 
-To use the default MMDetection installed in the environment rather than that you are working with, you can remove the following line in those scripts
+### 如何使用多个版本的`MMDetection`
+
+训练和测试脚本已经修改了`PYTHONPATH`，以确保脚本使用当前目录中的 `MMDetection`
+
+要使用安装在指定环境中而不是正在使用的默认`MMDetection`，则可以在这些脚本中删除以下行：
 
 ```shell
 PYTHONPATH="$(dirname $0)/..":$PYTHONPATH
